@@ -1,5 +1,6 @@
 package nz.ac.auckland.se281.datastructures;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -11,21 +12,33 @@ import java.util.Set;
  * @param <T> The type of each vertex, that have a total ordering.
  */
 public class Graph<T extends Comparable<T>> {
-  public Graph(Set<T> verticies, Set<Edge<T>> edges) {}
+  private Set<T> verticies;
+  private Set<Edge<T>> edges;
+
+  public Graph(Set<T> verticies, Set<Edge<T>> edges) {
+    this.verticies = verticies;
+    this.edges = edges;
+  }
 
   public Set<T> getRoots() {
-    // TODO: Task 1.
-    throw new UnsupportedOperationException();
+    Set<T> roots = new HashSet<T>();
+    for (Edge<T> edge : edges) {
+      if (edge.getSource().equals(edge.getDestination())) {
+        roots.add(edge.getSource());
+      }
+    }
+    return roots;
   }
 
   public boolean isReflexive() {
-    // TODO: Task 1.
-    throw new UnsupportedOperationException();
+    return (verticies == getRoots());
   }
 
   public boolean isSymmetric() {
-    // TODO: Task 1.
-    throw new UnsupportedOperationException();
+    for (Edge<T> edge : edges) {
+      if (edge.getSource() != edge.getDestination()) {}
+    }
+    return true;
   }
 
   public boolean isTransitive() {
