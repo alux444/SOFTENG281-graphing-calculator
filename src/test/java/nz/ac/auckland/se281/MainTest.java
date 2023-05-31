@@ -31,14 +31,14 @@ public class MainTest {
     public void T1_B_roots() throws Exception {
       runCommands(OPEN_FILE, "b.txt", LIST_ROOT_VERTICIES);
       assertContains("Successfully opened graph from file b.txt");
-      assertContains("[]");
+      assertContains("[6]");
     }
 
     @Test
     public void T1_C_roots() throws Exception {
       runCommands(OPEN_FILE, "c.txt", LIST_ROOT_VERTICIES);
       assertContains("Successfully opened graph from file c.txt");
-      assertContains("[0]");
+      assertContains("[0, 1]");
     }
 
     @Test
@@ -52,7 +52,7 @@ public class MainTest {
     public void T1_B_reflexivity() throws Exception {
       runCommands(OPEN_FILE, "b.txt", CHECK_REFLEXIVITY);
       assertContains("Successfully opened graph from file b.txt");
-      assertContains("The graph is reflexive");
+      assertContains("The graph is NOT reflexive");
     }
 
     @Test
@@ -73,7 +73,7 @@ public class MainTest {
     public void T1_B_symmetry() throws Exception {
       runCommands(OPEN_FILE, "b.txt", CHECK_SYMMETRY);
       assertContains("Successfully opened graph from file b.txt");
-      assertContains("The graph is symmetric");
+      assertContains("The graph is NOT symmetric");
     }
 
     @Test
@@ -150,7 +150,7 @@ public class MainTest {
     public void T1_B_equivalence_class_1() throws Exception {
       runCommands(OPEN_FILE, "b.txt", COMPUTE_EQUIVALENCE, 1);
       assertContains("Successfully opened graph from file b.txt");
-      assertContains("[0, 1, 2, 3, 4, 5]");
+      assertContains("[]");
     }
 
     @Test

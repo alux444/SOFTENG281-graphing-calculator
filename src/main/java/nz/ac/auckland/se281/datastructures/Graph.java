@@ -21,23 +21,71 @@ public class Graph<T extends Comparable<T>> {
   }
 
   public Set<T> getRoots() {
+    // creates a new set for roots
     Set<T> roots = new HashSet<T>();
-    for (Edge<T> edge : edges) {
-      if (edge.getSource().equals(edge.getDestination())) {
-        roots.add(edge.getSource());
+    // go through each vertice
+    for (T vertice : verticies) {
+      int inDegree = 0;
+      int outDegree = 0;
+      for (Edge<T> edge : edges) {
+        // if the edge destination is equal to the vertice, and source ISNT, i.e it isnt a self
+        // loop, increase the in degree.
+        if (edge.getDestination().equals(vertice) && !edge.getSource().equals(vertice)) {
+          inDegree++;
+        }
+        // otherwise, if the source is the vertice, increase the out degree.
+        if (edge.getSource().equals(vertice)) {
+          outDegree++;
+        }
+      }
+      // add the verticle if the in degree is 0 and out degree is > 0
+      if (inDegree == 0 && outDegree > 0) {
+        roots.add(vertice);
       }
     }
     return roots;
   }
 
   public boolean isReflexive() {
-    return (verticies == getRoots());
+    // check if the vertices is the same as the roots. if all verticles are roots, the graph is
+    // reflexing
+    // creates a new set for roots
+    Set<T> selfLoops = new HashSet<T>();
+    for (Edge<T> edge : edges) {
+      // if an edge has the same source and destination (and so is a root), add it to the set.
+      if (edge.getSource().equals(edge.getDestination())) {
+        selfLoops.add(edge.getSource());
+      }
+    }
+    // compare verticles with all self loops
+    return (verticies.equals(selfLoops));
   }
 
   public boolean isSymmetric() {
-    for (Edge<T> edge : edges) {
-      if (edge.getSource() != edge.getDestination()) {}
+
+    // check for a vertice
+    for (T vertice : verticies) {
+      boolean symmetry = false;
+      for (Edge<T> edge : edges) {
+        // check all edges with specific vertice
+        if (edge.getSource().equals(vertice)) {
+          for (Edge<T> otherEdge : edges) {
+            // go through all edges and look for another edge which has the source of our first
+            // edges destination (i.e the first edge is going into this edge)
+            if (otherEdge.getSource().equals(edge.getDestination())) {
+              // now if there exists an edge which returns back to the vertice, there is symmetry.
+              if (otherEdge.getDestination().equals(vertice)) {
+                symmetry = true;
+              }
+            }
+          }
+        }
+      }
+      if (!symmetry) {
+        return false;
+      }
     }
+
     return true;
   }
 
@@ -47,8 +95,19 @@ public class Graph<T extends Comparable<T>> {
   }
 
   public boolean isAntiSymmetric() {
-    // TODO: Task 1.
-    throw new UnsupportedOperationException();
+    for (Edge<T> edge : edges) {
+      for (Edge<T> nestedEdge : edges) {
+        if (edge.getDestination().equals(nestedEdge.getSource())) {
+          if (nestedEdge.getDestination().equals(edge.getSource())) {
+            if (!edge.getDestination().equals(edge.getSource())) {
+              return false;
+            }
+          }
+        }
+      }
+    }
+
+    return true;
   }
 
   public boolean isEquivalence() {
