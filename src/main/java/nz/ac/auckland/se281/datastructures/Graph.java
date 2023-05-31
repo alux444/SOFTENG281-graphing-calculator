@@ -23,10 +23,12 @@ public class Graph<T extends Comparable<T>> {
   public Set<T> getRoots() {
     // creates a new set for roots
     Set<T> roots = new HashSet<T>();
+    Set<T> equivalenceClassRoots = new HashSet<>();
     // go through each vertice
     for (T vertice : verticies) {
       int inDegree = 0;
       int outDegree = 0;
+
       for (Edge<T> edge : edges) {
         // if the edge destination is equal to the vertice, and source ISNT, i.e it isnt a self
         // loop, increase the in degree.
@@ -121,10 +123,14 @@ public class Graph<T extends Comparable<T>> {
   }
 
   public boolean isAntiSymmetric() {
+    // go through edges
     for (Edge<T> edge : edges) {
       for (Edge<T> nestedEdge : edges) {
+        // if the destination of this edge = the source of the other edge
         if (edge.getDestination().equals(nestedEdge.getSource())) {
+          // and if the destination of the other edge = source of this (i.e xRy and yRx)
           if (nestedEdge.getDestination().equals(edge.getSource())) {
+            // if y =/= x, the graph isnt antisymmetric
             if (!edge.getDestination().equals(edge.getSource())) {
               return false;
             }
@@ -137,13 +143,26 @@ public class Graph<T extends Comparable<T>> {
   }
 
   public boolean isEquivalence() {
-    // TODO: Task 1.
-    throw new UnsupportedOperationException();
+    // if the graph is reflexive, symmetric and transitive, it is equivalent.
+    return (isReflexive() && isSymmetric() && isTransitive());
   }
 
   public Set<T> getEquivalenceClass(T vertex) {
-    // TODO: Task 1.
-    throw new UnsupportedOperationException();
+    Set<T> equivalenceClasses = new HashSet<T>();
+
+    // Iterate through every edge
+    for (Edge<T> edge : edges) {
+      // If the destination of the edge is the vertex, add the source to the equivalence class
+      if (edge.getDestination().equals(vertex)) {
+        equivalenceClasses.add(edge.getSource());
+      }
+      // If the source of the edge is the vertex, add the destination to the equivalence class
+      if (edge.getSource().equals(vertex)) {
+        equivalenceClasses.add(edge.getDestination());
+      }
+    }
+
+    return equivalenceClasses;
   }
 
   public List<T> iterativeBreadthFirstSearch() {
