@@ -90,8 +90,34 @@ public class Graph<T extends Comparable<T>> {
   }
 
   public boolean isTransitive() {
-    // TODO: Task 1.
-    throw new UnsupportedOperationException();
+    // go through all edges.
+    for (Edge<T> edge : edges) {
+      // set the 'x' and 'y' values. assuming for this edge, we have xRy
+      T x = edge.getSource();
+      T y = edge.getDestination();
+      for (Edge<T> secondEdge : edges) {
+        T z = secondEdge.getDestination();
+        // go through all edges again to find an edge which has a source the same as the first edges
+        // destination (i.e the first is incoming to the second) thereby fulfilling yRz
+        if (edge.getDestination().equals(secondEdge.getSource())) {
+          boolean transitivity = false;
+
+          // go through all edges and look for an edge which fulfills xRz.
+          for (Edge<T> validationEdge : edges) {
+            if (validationEdge.getSource().equals(x) && validationEdge.getDestination().equals(z)) {
+              transitivity = true;
+              break;
+            }
+          }
+
+          // if there is no edge which fulfills xRz if xRy and yRz, the graph isnt transitive.
+          if (!transitivity) {
+            return false;
+          }
+        }
+      }
+    }
+    return true;
   }
 
   public boolean isAntiSymmetric() {
