@@ -24,43 +24,62 @@ public class Graph<T extends Comparable<T>> {
     this.edges = edges;
   }
 
+  /**
+   * Finds the roots of the graph. Does this by checking for equivalence first, and then returning
+   * the minimum values of the equivalence classes of classes that have more than 1 node.
+   */
   public Set<T> getRoots() {
     // creates a new set for roots
-    Set<T> roots = new HashSet<T>();
+    List<T> roots = new ArrayList<T>();
     // go through each vertice
 
     // only check equivalence class if the graph is an equivalence realtion
     if (isEquivalence()) {
       for (T vertex : verticies) {
         // go through each vertex and add the minimum value for each equivalence relation
-        roots.add(Collections.min(getEquivalenceClass(vertex)));
-      }
-    } else {
-      // if the relation isnt equivalence, then just look for an indegree of 0 and outdegree of > 0
-      for (T vertice : verticies) {
-        int inDegree = 0;
-        int outDegree = 0;
-
-        for (Edge<T> edge : edges) {
-          // if the edge destination is equal to the vertice, and source ISNT, i.e it isnt a self
-          // loop, increase the in degree.
-          if (edge.getDestination().equals(vertice) && !edge.getSource().equals(vertice)) {
-            inDegree++;
-          }
-          // otherwise, if the source is the vertice, increase the out degree.
-          if (edge.getSource().equals(vertice)) {
-            outDegree++;
-          }
-        }
-        // add the verticle if the in degree is 0 and out degree is > 0
-        if (inDegree == 0 && outDegree > 0) {
-          roots.add(vertice);
+        Set<T> equivalenceClass = getEquivalenceClass(vertex);
+        // if there are more than 1 node in the clas, add to the roots.
+        if (equivalenceClass.size() > 1) {
+          roots.add(Collections.min(equivalenceClass));
         }
       }
     }
-    return roots;
+    // if the relation isnt equivalence, then just look for an indegree of 0 and outdegree of > 0
+    for (T vertice : verticies) {
+      int inDegree = 0;
+      int outDegree = 0;
+
+      for (Edge<T> edge : edges) {
+        // if the edge destination is equal to the vertice, and source ISNT, i.e it isnt a self
+        // loop, increase the in degree.
+        if (edge.getDestination().equals(vertice) && !edge.getSource().equals(vertice)) {
+          inDegree++;
+        }
+        // otherwise, if the source is the vertice, increase the out degree.
+        if (edge.getSource().equals(vertice)) {
+          outDegree++;
+        }
+      }
+      // add the verticle if the in degree is 0 and out degree is > 0
+      if (inDegree == 0 && outDegree > 0) {
+        roots.add(vertice);
+      }
+    }
+
+    // sort the roots and convert to a set
+    Set<T> result = new HashSet<>();
+    Collections.sort(roots);
+    for (T root : roots) {
+      result.add(root);
+    }
+
+    return result;
   }
 
+  /**
+   * Checks reflexivity by going through every vertex and ensuring there is a self loop. returns a
+   * boolean result.
+   */
   public boolean isReflexive() {
     // check if the vertices is the same as the roots. if all verticles are roots, the graph is
     // reflexing
@@ -76,6 +95,10 @@ public class Graph<T extends Comparable<T>> {
     return (verticies.equals(selfLoops));
   }
 
+  /**
+   * Checks for symmetry by ensuring that for every edge where xRy, there is also a yRx (as in, an
+   * edge going from A to B AND B to A) returns a boolean based off result
+   */
   public boolean isSymmetric() {
 
     // check for a vertice
@@ -104,6 +127,12 @@ public class Graph<T extends Comparable<T>> {
     return true;
   }
 
+  /**
+   * finds the transitivity of a graph by going through all edges where xRy and there exists a yRz.
+   * It then searches for a xRz to confirm transitivity, otherwise return a false if this is ever
+   * broken. (i.e for every edge that goes A to B which exists a B to C, ensure that there is always
+   * an edge A to C) returns a boolean result.
+   */
   public boolean isTransitive() {
     // go through all edges.
     for (Edge<T> edge : edges) {
@@ -134,6 +163,11 @@ public class Graph<T extends Comparable<T>> {
     return true;
   }
 
+  /**
+   * Checks for antisymmetry by going through all xRy and yRx, in every case x = y, otherwise the
+   * graph is not antisymmetric (i.e for all edges where A to B and B to A, this MUST mean that B is
+   * A) returns a boolean result
+   */
   public boolean isAntiSymmetric() {
     // go through edges
     for (Edge<T> edge : edges) {
@@ -154,11 +188,20 @@ public class Graph<T extends Comparable<T>> {
     return true;
   }
 
+  /**
+   * checks for equivalence by chceking if the graph is reflexive, symmetric and transitive. it must
+   * be all 3. returns a boolean result
+   */
   public boolean isEquivalence() {
     // if the graph is reflexive, symmetric and transitive, it is equivalent.
     return (isReflexive() && isSymmetric() && isTransitive());
   }
 
+  /**
+   * Checks the equivalence class for a specific vertex by finding every edge that leads from or to
+   * the vertex returns a set of all the vertices which lead to or from the vertex (aka the
+   * equivalence class)
+   */
   public Set<T> getEquivalenceClass(T vertex) {
     Set<T> equivalenceClasses = new HashSet<T>();
 
@@ -181,6 +224,10 @@ public class Graph<T extends Comparable<T>> {
     return equivalenceClasses;
   }
 
+  /**
+   * goes through an iterative breadth first search, returning a list of the order of traversal of
+   * the graph
+   */
   public List<T> iterativeBreadthFirstSearch() {
     Set<T> roots = getRoots();
     Queue<T> queue = new Queue<T>();
@@ -240,6 +287,10 @@ public class Graph<T extends Comparable<T>> {
     return result;
   }
 
+  /**
+   * goes through an iterative depth first search, returning a list of the order of traversal of the
+   * graph
+   */
   public List<T> iterativeDepthFirstSearch() {
     Set<T> roots = getRoots();
     Stack<T> stack = new Stack<T>();
@@ -287,6 +338,10 @@ public class Graph<T extends Comparable<T>> {
     return result;
   }
 
+  /**
+   * goes through an recursive breadth first search, returning a list of the order of traversal of
+   * the graph
+   */
   public List<T> recursiveBreadthFirstSearch() {
     // set initial values for recursive search
     Set<T> roots = getRoots();
@@ -315,7 +370,7 @@ public class Graph<T extends Comparable<T>> {
     }
 
     // running recursive function
-    List<T> finalResult = recursiveBFS(queue, visited, result);
+    List<T> finalResult = recursiveFunctionBreadthFirst(queue, visited, result);
 
     for (T t : finalResult) {
       System.out.println(t);
@@ -324,7 +379,8 @@ public class Graph<T extends Comparable<T>> {
     return finalResult;
   }
 
-  private List<T> recursiveBFS(Queue<T> queue, Set<T> visited, List<T> result) {
+  /** a recursive helper function for the recursive breath search */
+  private List<T> recursiveFunctionBreadthFirst(Queue<T> queue, Set<T> visited, List<T> result) {
     if (queue.isEmpty()) {
       // base case of if the queue is empty, return the list of results.
       return result;
@@ -355,10 +411,14 @@ public class Graph<T extends Comparable<T>> {
       }
 
       // recursively call function again.
-      return recursiveBFS(queue, visited, result);
+      return recursiveFunctionBreadthFirst(queue, visited, result);
     }
   }
 
+  /**
+   * goes through an recursive depth first search, returning a list of the order of traversal of the
+   * graph
+   */
   public List<T> recursiveDepthFirstSearch() {
     // intiialise variables for recursive search
     Set<T> roots = getRoots();
@@ -373,12 +433,13 @@ public class Graph<T extends Comparable<T>> {
       stack.push(root);
     }
 
-    List<T> finalResult = recursiveDFS(stack, visited, result);
+    List<T> finalResult = recursiveFunctionDepthFirst(stack, visited, result);
 
     return finalResult;
   }
 
-  private List<T> recursiveDFS(Stack<T> stack, Set<T> visited, List<T> result) {
+  /** a recursive helper function for the recursive depth search */
+  private List<T> recursiveFunctionDepthFirst(Stack<T> stack, Set<T> visited, List<T> result) {
     if (stack.isEmpty()) {
       return result;
     } else {
@@ -411,7 +472,7 @@ public class Graph<T extends Comparable<T>> {
           stack.push(destination);
         }
       }
-      return recursiveDFS(stack, visited, result);
+      return recursiveFunctionDepthFirst(stack, visited, result);
     }
   }
 }
