@@ -6,6 +6,7 @@ import java.util.Comparator;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.TreeMap;
 
 /**
  * A graph that is composed of a set of verticies and edges.
@@ -192,21 +193,19 @@ public class Graph<T extends Comparable<T>> {
       // Add the root to the result list
       result.add(root);
 
-      List<Edge<T>> rootsChildren = new ArrayList<>();
+      // create new treemap
+      TreeMap<T, Edge<T>> rootsChildren = new TreeMap<>();
 
       // Find all edges with the root as the source and enqueue them
       for (Edge<T> edge : edges) {
         if (edge.getSource().equals(root)) {
-          rootsChildren.add(edge);
+          rootsChildren.put(edge.getDestination(), edge);
         }
       }
 
-      // sort the children before queueing
-      Collections.sort(rootsChildren, Comparator.comparing(edge -> edge.getDestination()));
-
       // queue the children
-      for (Edge<T> edge : rootsChildren) {
-        queue.enqueue(edge);
+      for (T key : rootsChildren.keySet()) {
+        queue.enqueue(rootsChildren.get(key));
       }
 
       // Perform BFS
@@ -220,22 +219,19 @@ public class Graph<T extends Comparable<T>> {
           // add the current vertex to the result list
           result.add(currentVertex);
 
-          // create list for all edges of this particular queue.
-          List<Edge<T>> currentChildren = new ArrayList<>();
+          // create a tree map to automatically sort by the destination values.
+          TreeMap<T, Edge<T>> children = new TreeMap<>();
 
-          // find all edges with the current vertex as the source and enqueue them
+          // find all edges with the same source as this edges destinations
           for (Edge<T> edge : edges) {
             if (edge.getSource().equals(currentVertex)) {
-              currentChildren.add(edge);
+              children.put(edge.getDestination(), edge);
             }
           }
 
-          // sort the list
-          Collections.sort(currentChildren, Comparator.comparing(edge -> edge.getDestination()));
-
-          // queue the list
-          for (Edge<T> edge : currentChildren) {
-            queue.enqueue(edge);
+          // queue each edge.
+          for (T key : children.keySet()) {
+            queue.enqueue(children.get(key));
           }
         }
       }
@@ -266,8 +262,8 @@ public class Graph<T extends Comparable<T>> {
           result.add(currentVertex);
         }
 
-        // go through every edge
-        List<Edge<T>> currentChildren = new ArrayList<>();
+        // create a tree map that compares in reverse order.
+        TreeMap<T, Edge<T>> currentChildren = new TreeMap<>(Comparator.reverseOrder());
 
         for (Edge<T> edge : edges) {
           // look for edges with the same source
@@ -275,20 +271,15 @@ public class Graph<T extends Comparable<T>> {
             // look for edges that do not have a vertex we have already visited
             if (!visited.contains(edge.getDestination())) {
               // add the edge to the list
-              currentChildren.add(edge);
+              currentChildren.put(edge.getDestination(), edge);
             }
           }
         }
 
         if (!currentChildren.isEmpty()) {
-          // Sort the children before pushing them into the stack
-          Collections.sort(
-              currentChildren,
-              Comparator.comparing(edge -> edge.getDestination(), Comparator.reverseOrder()));
-
-          // Push the children into the stack in the reverse order
-          for (Edge<T> edge : currentChildren) {
-            stack.push(edge.getDestination());
+          // push the destination into the stack.
+          for (T destination : currentChildren.keySet()) {
+            stack.push(destination);
           }
         }
       }
@@ -297,6 +288,7 @@ public class Graph<T extends Comparable<T>> {
   }
 
   public List<T> recursiveBreadthFirstSearch() {
+    // set initial values for recursive search
     Set<T> roots = getRoots();
     Queue<T> queue = new Queue<>();
     Set<T> visited = new HashSet<>();
@@ -306,22 +298,23 @@ public class Graph<T extends Comparable<T>> {
       visited.add(root);
       result.add(root);
 
-      List<Edge<T>> rootsChildren = new ArrayList<>();
+      // create new treemap
+      TreeMap<T, Edge<T>> rootsChildren = new TreeMap<>();
 
+      // Find all edges with the root as the source and enqueue them
       for (Edge<T> edge : edges) {
         if (edge.getSource().equals(root)) {
-          rootsChildren.add(edge);
+          rootsChildren.put(edge.getDestination(), edge);
         }
       }
 
-      Collections.sort(rootsChildren, Comparator.comparing(edge -> edge.getDestination()));
-
-      for (Edge<T> edge : rootsChildren) {
-        queue.enqueue(edge);
-        System.out.println("queueing edges");
+      // queue the children
+      for (T key : rootsChildren.keySet()) {
+        queue.enqueue(rootsChildren.get(key));
       }
     }
 
+    // running recursive function
     List<T> finalResult = recursiveBFS(queue, visited, result);
 
     for (T t : finalResult) {
@@ -345,21 +338,19 @@ public class Graph<T extends Comparable<T>> {
         visited.add(vertex);
         result.add(vertex);
 
-        List<Edge<T>> children = new ArrayList<>();
+        // create a tree map to automatically sort by the destination values.
+        TreeMap<T, Edge<T>> children = new TreeMap<>();
 
         // find all edges with the same source as this edges destinations
         for (Edge<T> edge : edges) {
           if (edge.getSource().equals(vertex)) {
-            children.add(edge);
+            children.put(edge.getDestination(), edge);
           }
         }
 
-        // sort in ascending order
-        Collections.sort(children, Comparator.comparing(edge -> edge.getDestination()));
-
         // queue each edge.
-        for (Edge<T> edge : children) {
-          queue.enqueue(edge);
+        for (T key : children.keySet()) {
+          queue.enqueue(children.get(key));
         }
       }
 
@@ -400,8 +391,8 @@ public class Graph<T extends Comparable<T>> {
         result.add(currentVertex);
       }
 
-      // go through every edge
-      List<Edge<T>> currentChildren = new ArrayList<>();
+      // create a tree map that compares in reverse order.
+      TreeMap<T, Edge<T>> currentChildren = new TreeMap<>(Comparator.reverseOrder());
 
       for (Edge<T> edge : edges) {
         // look for edges with the same source
@@ -409,20 +400,15 @@ public class Graph<T extends Comparable<T>> {
           // look for edges that do not have a vertex we have already visited
           if (!visited.contains(edge.getDestination())) {
             // add the edge to the list
-            currentChildren.add(edge);
+            currentChildren.put(edge.getDestination(), edge);
           }
         }
       }
 
       if (!currentChildren.isEmpty()) {
-        // Sort the children before pushing them into the stack
-        Collections.sort(
-            currentChildren,
-            Comparator.comparing(edge -> edge.getDestination(), Comparator.reverseOrder()));
-
-        // Push the children into the stack in the reverse order
-        for (Edge<T> edge : currentChildren) {
-          stack.push(edge.getDestination());
+        // push the destination into the stack.
+        for (T destination : currentChildren.keySet()) {
+          stack.push(destination);
         }
       }
       return recursiveDFS(stack, visited, result);
