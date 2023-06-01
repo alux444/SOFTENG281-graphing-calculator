@@ -1,18 +1,18 @@
 package nz.ac.auckland.se281.datastructures;
 
 public class Node<T> {
-  private Edge<T> data;
+  private T data;
   private Node<T> next;
 
-  public Node(Edge<T> data) {
+  public Node(T data) {
     this.data = data;
   }
 
-  public Edge<T> getData() {
+  public T getData() {
     return data;
   }
 
-  public void setData(Edge<T> data) {
+  public void setData(T data) {
     this.data = data;
   }
 

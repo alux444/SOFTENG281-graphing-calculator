@@ -9,23 +9,24 @@ public class Stack<T> {
     this.size = 0;
   }
 
-  public void push(Edge<T> data) {
+  public void push(T data) {
     Node<T> tempNode = new Node<T>(data);
     tempNode.setNext(this.head);
     this.head = tempNode;
     size++;
   }
 
-  public Edge<T> pop() {
+  public T pop() {
     if (head == null) {
       return null;
     }
-    Edge<T> popped = head.getData();
+    T popped = head.getData();
     this.head = head.getNext();
+    size--;
     return popped;
   }
 
-  public Edge<T> peek() {
+  public T peek() {
     return head.getData();
   }
 

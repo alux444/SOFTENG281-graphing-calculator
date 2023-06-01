@@ -106,9 +106,8 @@ public class Graph<T extends Comparable<T>> {
   public boolean isTransitive() {
     // go through all edges.
     for (Edge<T> edge : edges) {
-      // set the 'x' and 'y' values. assuming for this edge, we have xRy
+      // set the 'x'. assuming for this edge, we have xRy
       T x = edge.getSource();
-      T y = edge.getDestination();
       for (Edge<T> secondEdge : edges) {
         T z = secondEdge.getDestination();
         // go through all edges again to find an edge which has a source the same as the first edges
@@ -188,57 +187,55 @@ public class Graph<T extends Comparable<T>> {
     List<T> result = new ArrayList<T>();
 
     for (T root : roots) {
-      // Check if the root has already been visited
-      if (!visited.contains(root)) {
-        // Mark the root as visited
-        visited.add(root);
-        // Add the root to the result list
-        result.add(root);
+      // Mark the root as visited
+      visited.add(root);
+      // Add the root to the result list
+      result.add(root);
 
-        List<Edge<T>> rootsChildren = new ArrayList<>();
+      List<Edge<T>> rootsChildren = new ArrayList<>();
 
-        // Find all edges with the root as the source and enqueue them
-        for (Edge<T> edge : edges) {
-          if (edge.getSource().equals(root)) {
-            rootsChildren.add(edge);
+      // Find all edges with the root as the source and enqueue them
+      for (Edge<T> edge : edges) {
+        if (edge.getSource().equals(root)) {
+          rootsChildren.add(edge);
+        }
+      }
+
+      // sort the children before queueing
+      Collections.sort(rootsChildren, Comparator.comparing(edge -> edge.getDestination()));
+
+      // queue the children
+      for (Edge<T> edge : rootsChildren) {
+        queue.enqueue(edge);
+      }
+
+      // Perform BFS
+      while (!queue.isEmpty()) {
+        Edge<T> currentEdge = queue.dequeue();
+        T currentVertex = currentEdge.getDestination();
+        // check if the current vertex has already been visited
+        if (!visited.contains(currentVertex)) {
+          // mark the current vertex as visited
+          visited.add(currentVertex);
+          // add the current vertex to the result list
+          result.add(currentVertex);
+
+          // create list for all edges of this particular queue.
+          List<Edge<T>> currentChildren = new ArrayList<>();
+
+          // find all edges with the current vertex as the source and enqueue them
+          for (Edge<T> edge : edges) {
+            if (edge.getSource().equals(currentVertex)) {
+              currentChildren.add(edge);
+            }
           }
-        }
 
-        // sort the children before queueing
-        Collections.sort(rootsChildren, Comparator.comparing(edge -> edge.getDestination()));
+          // sort the list
+          Collections.sort(currentChildren, Comparator.comparing(edge -> edge.getDestination()));
 
-        // queue the children
-        for (Edge<T> edge : rootsChildren) {
-          queue.enqueue(edge);
-        }
-
-        // Perform BFS
-        while (!queue.isEmpty()) {
-          Edge<T> currentEdge = queue.dequeue();
-          T currentVertex = currentEdge.getDestination();
-          // check if the current vertex has already been visited
-          if (!visited.contains(currentVertex)) {
-            // mark the current vertex as visited
-            visited.add(currentVertex);
-            // add the current vertex to the result list
-            result.add(currentVertex);
-
-            // create list for all edges of this particular queue.
-            List<Edge<T>> currentChildren = new ArrayList<>();
-
-            // find all edges with the current vertex as the source and enqueue them
-            for (Edge<T> edge : edges) {
-              if (edge.getSource().equals(currentVertex)) {
-                currentChildren.add(edge);
-              }
-            }
-
-            // sort the list
-            Collections.sort(currentChildren, Comparator.comparing(edge -> edge.getDestination()));
-
-            for (Edge<T> edge : currentChildren) {
-              queue.enqueue(edge);
-            }
+          // queue the list
+          for (Edge<T> edge : currentChildren) {
+            queue.enqueue(edge);
           }
         }
       }
@@ -248,8 +245,47 @@ public class Graph<T extends Comparable<T>> {
   }
 
   public List<T> iterativeDepthFirstSearch() {
-    // TODO: Task 2.
-    throw new UnsupportedOperationException();
+    Set<T> roots = getRoots();
+    Stack<T> stack = new Stack<T>();
+    Set<T> visited = new HashSet<T>();
+    List<T> result = new ArrayList<T>();
+
+    for (T root : roots) {
+      visited.add(root);
+      result.add(root);
+      stack.push(root);
+
+      while (!stack.isEmpty()) {
+        T currentVertex = stack.pop();
+
+        if (!visited.contains(currentVertex)) {
+          visited.add(currentVertex);
+          result.add(currentVertex);
+        }
+
+        List<Edge<T>> currentChildren = new ArrayList<>();
+        for (Edge<T> edge : edges) {
+          if (edge.getSource().equals(currentVertex)) {
+            if (!visited.contains(edge.getDestination())) {
+              currentChildren.add(edge);
+            }
+          }
+        }
+
+        if (!currentChildren.isEmpty()) {
+          // Sort the children before pushing them into the stack
+          Collections.sort(
+              currentChildren,
+              Comparator.comparing(edge -> edge.getDestination(), Comparator.reverseOrder()));
+
+          // Push the children into the stack in the reverse order
+          for (Edge<T> edge : currentChildren) {
+            stack.push(edge.getDestination());
+          }
+        }
+      }
+    }
+    return result;
   }
 
   public List<T> recursiveBreadthFirstSearch() {
