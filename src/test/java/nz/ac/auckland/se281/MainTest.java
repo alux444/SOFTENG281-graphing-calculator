@@ -272,6 +272,9 @@ public class MainTest {
     @Test
     public void TY_01_your_own_test() throws Exception {
       // Write your own test here, in the same format as the other tests.
+      runCommands(OPEN_FILE, "c.txt", GRAPH_SEARCH_RDFS);
+      assertContains("Successfully opened graph from file c.txt");
+      assertContains("[0, 1, 2, 3]");
     }
   }
 }
