@@ -22,19 +22,31 @@ public class Queue<T> {
     queueList.add(data);
   }
 
-  /** Dequeues the first added item from the queue and returns it. */
+  /**
+   * Dequeues the first added item from the queue and returns it.
+   *
+   * @return removed edge.
+   */
   public Edge<T> dequeue() {
     Edge<T> removed = queueList.get(0);
     queueList.remove(0);
     return removed;
   }
 
-  /** Returns the first added item from the queue without removing it. */
+  /**
+   * Returns the first added item from the queue without removing it.
+   *
+   * @return edge at front of queue.
+   */
   public Edge<T> peek() {
     return queueList.get(0);
   }
 
-  /** Returns a boolean true if the queue is currently empty, otherwise a false. */
+  /**
+   * Returns a boolean true if the queue is currently empty, otherwise a false.
+   *
+   * @return boolean of is empty.
+   */
   public boolean isEmpty() {
     if (queueList.size() == 0) {
       return true;
@@ -42,7 +54,11 @@ public class Queue<T> {
     return false;
   }
 
-  /** Returns the current queue in a list form. */
+  /**
+   * Returns the current queue in a list form.
+   *
+   * @return list of the current queue.
+   */
   public List<Edge<T>> returnQueue() {
     return queueList;
   }

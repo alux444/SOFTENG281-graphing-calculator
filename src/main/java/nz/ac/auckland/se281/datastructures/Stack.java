@@ -14,7 +14,7 @@ public class Stack<T> {
   /**
    * Pushes data into the top of the stack
    *
-   * @param T data to be pushed in.
+   * @param <T> data to be pushed in.
    */
   public void push(T data) {
     Node<T> tempNode = new Node<T>(data);
@@ -23,7 +23,11 @@ public class Stack<T> {
     size++;
   }
 
-  /** Pops the top item from the stack and returns it. */
+  /**
+   * Pops the top item from the stack and returns it.
+   *
+   * @return data at top of stack.
+   */
   public T pop() {
     if (head == null) {
       return null;
@@ -34,17 +38,29 @@ public class Stack<T> {
     return popped;
   }
 
-  /** Peeks at the first item of the stack, returning it without removing it. */
+  /**
+   * Peeks at the first item of the stack, returning it without removing it.
+   *
+   * @return data at top of stack.
+   */
   public T peek() {
     return head.getData();
   }
 
-  /** Returns the integer size of the stack. */
+  /**
+   * Returns the integer size of the stack.
+   *
+   * @return integer size.
+   */
   public int size() {
     return size;
   }
 
-  /** Returns a boolean true if the stack is currently empty, otherwise false. */
+  /**
+   * Returns a boolean true if the stack is currently empty, otherwise false.
+   *
+   * @return boolean of is empty.
+   */
   public boolean isEmpty() {
     return (size == 0);
   }

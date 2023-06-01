@@ -33,6 +33,8 @@ public class Graph<T extends Comparable<T>> {
   /**
    * Finds the roots of the graph. Does this by checking for equivalence first, and then returning
    * the minimum values of the equivalence classes of classes that have more than 1 node.
+   *
+   * @return set of roots.
    */
   public Set<T> getRoots() {
     // creates a new set for roots
@@ -85,6 +87,8 @@ public class Graph<T extends Comparable<T>> {
   /**
    * Checks reflexivity by going through every vertex and ensuring there is a self loop. returns a
    * boolean result.
+   *
+   * @return boolean of reflexivity.
    */
   public boolean isReflexive() {
     // check if the vertices is the same as the roots. if all verticles are roots, the graph is
@@ -104,6 +108,8 @@ public class Graph<T extends Comparable<T>> {
   /**
    * Checks for symmetry by ensuring that for every edge where xRy, there is also a yRx (as in, an
    * edge going from A to B AND B to A) returns a boolean based off result.
+   *
+   * @return boolean of symmetry.
    */
   public boolean isSymmetric() {
 
@@ -138,6 +144,8 @@ public class Graph<T extends Comparable<T>> {
    * It then searches for a xRz to confirm transitivity, otherwise return a false if this is ever
    * broken. (i.e for every edge that goes A to B which exists a B to C, ensure that there is always
    * an edge A to C) returns a boolean result.
+   *
+   * @return boolean of transitivity.
    */
   public boolean isTransitive() {
     // go through all edges.
@@ -173,6 +181,8 @@ public class Graph<T extends Comparable<T>> {
    * Checks for antisymmetry by going through all xRy and yRx, in every case x = y, otherwise the
    * graph is not antisymmetric (i.e for all edges where A to B and B to A, this MUST mean that B is
    * A) returns a boolean result.
+   *
+   * @return boolean of antisymmetry.
    */
   public boolean isAntiSymmetric() {
     // go through edges
@@ -197,6 +207,8 @@ public class Graph<T extends Comparable<T>> {
   /**
    * checks for equivalence by chceking if the graph is reflexive, symmetric and transitive. it must
    * be all 3. returns a boolean result.
+   *
+   * @return boolean of equivalence.
    */
   public boolean isEquivalence() {
     // if the graph is reflexive, symmetric and transitive, it is equivalent.
@@ -207,6 +219,9 @@ public class Graph<T extends Comparable<T>> {
    * Checks the equivalence class for a specific vertex by finding every edge that leads from or to
    * the vertex returns a set of all the vertices which lead to or from the vertex (aka the
    * equivalence class).
+   *
+   * @param <T> vertex of equivalence class.
+   * @return set of equivalence class for the vertex.
    */
   public Set<T> getEquivalenceClass(T vertex) {
     Set<T> equivalenceClasses = new HashSet<T>();
@@ -233,6 +248,8 @@ public class Graph<T extends Comparable<T>> {
   /**
    * goes through an iterative breadth first search, returning a list of the order of traversal of
    * the graph.
+   *
+   * @return list of order of search.
    */
   public List<T> iterativeBreadthFirstSearch() {
     Set<T> roots = getRoots();
@@ -296,6 +313,8 @@ public class Graph<T extends Comparable<T>> {
   /**
    * goes through an iterative depth first search, returning a list of the order of traversal of the
    * graph.
+   *
+   * @return list of order of search.
    */
   public List<T> iterativeDepthFirstSearch() {
     Set<T> roots = getRoots();
@@ -347,6 +366,8 @@ public class Graph<T extends Comparable<T>> {
   /**
    * goes through an recursive breadth first search, returning a list of the order of traversal of
    * the graph.
+   *
+   * @return list of order of search.
    */
   public List<T> recursiveBreadthFirstSearch() {
     // set initial values for recursive search
@@ -385,7 +406,14 @@ public class Graph<T extends Comparable<T>> {
     return finalResult;
   }
 
-  /** a recursive helper function for the recursive breath search. */
+  /**
+   * a recursive helper function for the recursive breath search.
+   *
+   * @param Queue<T> input queue.
+   * @param Set<T> set of visited vertices
+   * @param List<T> list of previous results.
+   * @return list of order of search.
+   */
   private List<T> recursiveFunctionBreadthFirst(Queue<T> queue, Set<T> visited, List<T> result) {
     if (queue.isEmpty()) {
       // base case of if the queue is empty, return the list of results.
@@ -424,6 +452,8 @@ public class Graph<T extends Comparable<T>> {
   /**
    * goes through an recursive depth first search, returning a list of the order of traversal of the
    * graph.
+   *
+   * @return list of order of search.
    */
   public List<T> recursiveDepthFirstSearch() {
     // intiialise variables for recursive search
@@ -444,7 +474,14 @@ public class Graph<T extends Comparable<T>> {
     return finalResult;
   }
 
-  /** a recursive helper function for the recursive depth search. */
+  /**
+   * a recursive helper function for the recursive depth search.
+   *
+   * @param Queue<T> input queue.
+   * @param Set<T> set of visited vertices
+   * @param List<T> list of previous results.
+   * @return list of order of search.
+   */
   private List<T> recursiveFunctionDepthFirst(Stack<T> stack, Set<T> visited, List<T> result) {
     if (stack.isEmpty()) {
       return result;

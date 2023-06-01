@@ -11,13 +11,17 @@ public class Node<T> {
   /**
    * The constructor for the node.
    *
-   * @param T data input for the node.
+   * @param <T> data input for the node.
    */
   public Node(T data) {
     this.data = data;
   }
 
-  /** returns the data of the node. */
+  /**
+   * returns the data of the node.
+   *
+   * @return the data of the node.
+   */
   public T getData() {
     return data;
   }
@@ -25,13 +29,17 @@ public class Node<T> {
   /**
    * sets the data of the node.
    *
-   * @param T data that is to be set.
+   * @param <T> data that is to be set.
    */
   public void setData(T data) {
     this.data = data;
   }
 
-  /** Returns the next node. */
+  /**
+   * Returns the next node.
+   *
+   * @return next node.
+   */
   public Node<T> getNext() {
     return next;
   }
