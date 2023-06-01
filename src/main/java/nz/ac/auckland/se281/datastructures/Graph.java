@@ -251,22 +251,30 @@ public class Graph<T extends Comparable<T>> {
     List<T> result = new ArrayList<T>();
 
     for (T root : roots) {
+      // add roots to results, visited and the stack
       visited.add(root);
       result.add(root);
       stack.push(root);
 
       while (!stack.isEmpty()) {
+        // pop the current stack
         T currentVertex = stack.pop();
 
+        // add the vertex on the stack to results and visited if we havent already
         if (!visited.contains(currentVertex)) {
           visited.add(currentVertex);
           result.add(currentVertex);
         }
 
+        // go through every edge
         List<Edge<T>> currentChildren = new ArrayList<>();
+
         for (Edge<T> edge : edges) {
+          // look for edges with the same source
           if (edge.getSource().equals(currentVertex)) {
+            // look for edges that do not have a vertex we have already visited
             if (!visited.contains(edge.getDestination())) {
+              // add the edge to the list
               currentChildren.add(edge);
             }
           }
@@ -289,12 +297,135 @@ public class Graph<T extends Comparable<T>> {
   }
 
   public List<T> recursiveBreadthFirstSearch() {
-    // TODO: Task 3.
-    throw new UnsupportedOperationException();
+    Set<T> roots = getRoots();
+    Queue<T> queue = new Queue<>();
+    Set<T> visited = new HashSet<>();
+    List<T> result = new ArrayList<>();
+
+    for (T root : roots) {
+      visited.add(root);
+      result.add(root);
+
+      List<Edge<T>> rootsChildren = new ArrayList<>();
+
+      for (Edge<T> edge : edges) {
+        if (edge.getSource().equals(root)) {
+          rootsChildren.add(edge);
+        }
+      }
+
+      Collections.sort(rootsChildren, Comparator.comparing(edge -> edge.getDestination()));
+
+      for (Edge<T> edge : rootsChildren) {
+        queue.enqueue(edge);
+        System.out.println("queueing edges");
+      }
+    }
+
+    List<T> finalResult = recursiveBFS(queue, visited, result);
+
+    for (T t : finalResult) {
+      System.out.println(t);
+    }
+
+    return finalResult;
+  }
+
+  private List<T> recursiveBFS(Queue<T> queue, Set<T> visited, List<T> result) {
+    if (queue.isEmpty()) {
+      // base case of if the queue is empty, return the list of results.
+      return result;
+    } else {
+      // dequeue and get the current edge and its vertex
+      Edge<T> currentEdge = queue.dequeue();
+      T vertex = currentEdge.getDestination();
+
+      // if we have not visited this node before,
+      if (!visited.contains(vertex)) {
+        visited.add(vertex);
+        result.add(vertex);
+
+        List<Edge<T>> children = new ArrayList<>();
+
+        // find all edges with the same source as this edges destinations
+        for (Edge<T> edge : edges) {
+          if (edge.getSource().equals(vertex)) {
+            children.add(edge);
+          }
+        }
+
+        // sort in ascending order
+        Collections.sort(children, Comparator.comparing(edge -> edge.getDestination()));
+
+        // queue each edge.
+        for (Edge<T> edge : children) {
+          queue.enqueue(edge);
+        }
+      }
+
+      // recursively call function again.
+      return recursiveBFS(queue, visited, result);
+    }
   }
 
   public List<T> recursiveDepthFirstSearch() {
-    // TODO: Task 3.
-    throw new UnsupportedOperationException();
+    // intiialise variables for recursive search
+    Set<T> roots = getRoots();
+    Stack<T> stack = new Stack<T>();
+    Set<T> visited = new HashSet<T>();
+    List<T> result = new ArrayList<T>();
+
+    for (T root : roots) {
+      // add roots to results, visited and the stack
+      visited.add(root);
+      result.add(root);
+      stack.push(root);
+    }
+
+    List<T> finalResult = recursiveDFS(stack, visited, result);
+
+    return finalResult;
+  }
+
+  private List<T> recursiveDFS(Stack<T> stack, Set<T> visited, List<T> result) {
+    if (stack.isEmpty()) {
+      return result;
+    } else {
+      // pop the current stack
+      T currentVertex = stack.pop();
+
+      // add the vertex on the stack to results and visited if we havent already
+      if (!visited.contains(currentVertex)) {
+        visited.add(currentVertex);
+        result.add(currentVertex);
+      }
+
+      // go through every edge
+      List<Edge<T>> currentChildren = new ArrayList<>();
+
+      for (Edge<T> edge : edges) {
+        // look for edges with the same source
+        if (edge.getSource().equals(currentVertex)) {
+          // look for edges that do not have a vertex we have already visited
+          if (!visited.contains(edge.getDestination())) {
+            // add the edge to the list
+            currentChildren.add(edge);
+          }
+        }
+      }
+
+      if (!currentChildren.isEmpty()) {
+        // Sort the children before pushing them into the stack
+        Collections.sort(
+            currentChildren,
+            Comparator.comparing(edge -> edge.getDestination(), Comparator.reverseOrder()));
+
+        // Push the children into the stack in the reverse order
+        for (Edge<T> edge : currentChildren) {
+          stack.push(edge.getDestination());
+        }
+      }
+      return recursiveDFS(stack, visited, result);
+    }
   }
 }
