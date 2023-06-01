@@ -1,5 +1,8 @@
 package nz.ac.auckland.se281.datastructures;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -23,26 +26,35 @@ public class Graph<T extends Comparable<T>> {
   public Set<T> getRoots() {
     // creates a new set for roots
     Set<T> roots = new HashSet<T>();
-    Set<T> equivalenceClassRoots = new HashSet<>();
     // go through each vertice
-    for (T vertice : verticies) {
-      int inDegree = 0;
-      int outDegree = 0;
 
-      for (Edge<T> edge : edges) {
-        // if the edge destination is equal to the vertice, and source ISNT, i.e it isnt a self
-        // loop, increase the in degree.
-        if (edge.getDestination().equals(vertice) && !edge.getSource().equals(vertice)) {
-          inDegree++;
-        }
-        // otherwise, if the source is the vertice, increase the out degree.
-        if (edge.getSource().equals(vertice)) {
-          outDegree++;
-        }
+    // only check equivalence class if the graph is an equivalence realtion
+    if (isEquivalence()) {
+      for (T vertex : verticies) {
+        // go through each vertex and add the minimum value for each equivalence relation
+        roots.add(Collections.min(getEquivalenceClass(vertex)));
       }
-      // add the verticle if the in degree is 0 and out degree is > 0
-      if (inDegree == 0 && outDegree > 0) {
-        roots.add(vertice);
+    } else {
+      // if the relation isnt equivalence, then just look for an indegree of 0 and outdegree of > 0
+      for (T vertice : verticies) {
+        int inDegree = 0;
+        int outDegree = 0;
+
+        for (Edge<T> edge : edges) {
+          // if the edge destination is equal to the vertice, and source ISNT, i.e it isnt a self
+          // loop, increase the in degree.
+          if (edge.getDestination().equals(vertice) && !edge.getSource().equals(vertice)) {
+            inDegree++;
+          }
+          // otherwise, if the source is the vertice, increase the out degree.
+          if (edge.getSource().equals(vertice)) {
+            outDegree++;
+          }
+        }
+        // add the verticle if the in degree is 0 and out degree is > 0
+        if (inDegree == 0 && outDegree > 0) {
+          roots.add(vertice);
+        }
       }
     }
     return roots;
@@ -150,15 +162,19 @@ public class Graph<T extends Comparable<T>> {
   public Set<T> getEquivalenceClass(T vertex) {
     Set<T> equivalenceClasses = new HashSet<T>();
 
-    // Iterate through every edge
-    for (Edge<T> edge : edges) {
-      // If the destination of the edge is the vertex, add the source to the equivalence class
-      if (edge.getDestination().equals(vertex)) {
-        equivalenceClasses.add(edge.getSource());
-      }
-      // If the source of the edge is the vertex, add the destination to the equivalence class
-      if (edge.getSource().equals(vertex)) {
-        equivalenceClasses.add(edge.getDestination());
+    // only check equivalence class if the graph is an equivalence realtion
+    if (isEquivalence()) {
+      // Iterate through every edge
+      for (Edge<T> edge : edges) {
+        // // If the destination of the edge is the vertex, add the source to the equivalence class
+        if (edge.getDestination().equals(vertex)) {
+          equivalenceClasses.add(edge.getSource());
+        }
+        // If the source of the edge is the vertex, add the destination to the equivalence class
+        // (ie. edge fulfills (v1,v2))
+        if (edge.getSource().equals(vertex)) {
+          equivalenceClasses.add(edge.getDestination());
+        }
       }
     }
 
@@ -166,8 +182,69 @@ public class Graph<T extends Comparable<T>> {
   }
 
   public List<T> iterativeBreadthFirstSearch() {
-    // TODO: Task 2.
-    throw new UnsupportedOperationException();
+    Set<T> roots = getRoots();
+    Queue<T> queue = new Queue<T>();
+    Set<T> visited = new HashSet<T>();
+    List<T> result = new ArrayList<T>();
+
+    for (T root : roots) {
+      // Check if the root has already been visited
+      if (!visited.contains(root)) {
+        // Mark the root as visited
+        visited.add(root);
+        // Add the root to the result list
+        result.add(root);
+
+        List<Edge<T>> rootsChildren = new ArrayList<>();
+
+        // Find all edges with the root as the source and enqueue them
+        for (Edge<T> edge : edges) {
+          if (edge.getSource().equals(root)) {
+            rootsChildren.add(edge);
+          }
+        }
+
+        // sort the children before queueing
+        Collections.sort(rootsChildren, Comparator.comparing(edge -> edge.getDestination()));
+
+        // queue the children
+        for (Edge<T> edge : rootsChildren) {
+          queue.enqueue(edge);
+        }
+
+        // Perform BFS
+        while (!queue.isEmpty()) {
+          Edge<T> currentEdge = queue.dequeue();
+          T currentVertex = currentEdge.getDestination();
+          // check if the current vertex has already been visited
+          if (!visited.contains(currentVertex)) {
+            // mark the current vertex as visited
+            visited.add(currentVertex);
+            // add the current vertex to the result list
+            result.add(currentVertex);
+
+            // create list for all edges of this particular queue.
+            List<Edge<T>> currentChildren = new ArrayList<>();
+
+            // find all edges with the current vertex as the source and enqueue them
+            for (Edge<T> edge : edges) {
+              if (edge.getSource().equals(currentVertex)) {
+                currentChildren.add(edge);
+              }
+            }
+
+            // sort the list
+            Collections.sort(currentChildren, Comparator.comparing(edge -> edge.getDestination()));
+
+            for (Edge<T> edge : currentChildren) {
+              queue.enqueue(edge);
+            }
+          }
+        }
+      }
+    }
+
+    return result;
   }
 
   public List<T> iterativeDepthFirstSearch() {
