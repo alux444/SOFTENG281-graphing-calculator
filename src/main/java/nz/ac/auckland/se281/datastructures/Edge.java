@@ -11,15 +11,23 @@ public class Edge<T> {
   private T source;
   private T destination;
 
+  /**
+   * the constructor for the edge type.
+   *
+   * @param <T> The source vertex.
+   * @param <T> The destination vertex.
+   */
   public Edge(T source, T destination) {
     this.source = source;
     this.destination = destination;
   }
 
+  /** returns the source vertex of the graph. */
   public T getSource() {
     return source;
   }
 
+  /** returns the destinatiion vertex of the graph. */
   public T getDestination() {
     return destination;
   }
