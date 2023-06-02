@@ -257,11 +257,16 @@ public class Graph<T extends Comparable<T>> {
     Set<T> visited = new HashSet<T>();
     List<T> result = new ArrayList<T>();
 
+    // first visit the roots
     for (T root : roots) {
       // Mark the root as visited
       visited.add(root);
       // Add the root to the result list
       result.add(root);
+    }
+
+    // now visit every child of the roots.
+    for (T root : roots) {
 
       // create new treemap
       TreeMap<T, Edge<T>> rootsChildren = new TreeMap<>();
@@ -399,10 +404,6 @@ public class Graph<T extends Comparable<T>> {
     // running recursive function
     List<T> finalResult = recursiveFunctionBreadthFirst(queue, visited, result);
 
-    for (T t : finalResult) {
-      System.out.println(t);
-    }
-
     return finalResult;
   }
 
@@ -458,18 +459,25 @@ public class Graph<T extends Comparable<T>> {
   public List<T> recursiveDepthFirstSearch() {
     // intiialise variables for recursive search
     Set<T> roots = getRoots();
+    List<T> listOfRoots = new ArrayList<>();
+
+    // put sets into a list
+    for (T root : roots) {
+      listOfRoots.add(root);
+    }
+
     Stack<T> stack = new Stack<T>();
     Set<T> visited = new HashSet<T>();
     List<T> result = new ArrayList<T>();
 
-    for (T root : roots) {
-      // add roots to results, visited and the stack
-      visited.add(root);
-      result.add(root);
-      stack.push(root);
+    for (int i = 0; i < listOfRoots.size(); i++) {
+      // add to stack in reverse order of roots.
+      stack.push(listOfRoots.get(listOfRoots.size() - i - 1));
     }
 
     List<T> finalResult = recursiveFunctionDepthFirst(stack, visited, result);
+
+    System.out.println("RDFS");
 
     return finalResult;
   }

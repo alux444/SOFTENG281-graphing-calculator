@@ -22,12 +22,18 @@ public class Edge<T> {
     this.destination = destination;
   }
 
-  /** returns the source vertex of the graph. */
+  /** returns the source vertex of the graph. 
+   * 
+   * @return source of vertex.
+  */
   public T getSource() {
     return source;
   }
 
-  /** returns the destinatiion vertex of the graph. */
+  /** returns the destinatiion vertex of the graph. 
+   * 
+   * @return source of destination.
+  */
   public T getDestination() {
     return destination;
   }
