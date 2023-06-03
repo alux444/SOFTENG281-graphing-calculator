@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.TreeMap;
@@ -75,10 +76,16 @@ public class Graph<T extends Comparable<T>> {
     }
 
     // sort the roots and convert to a set
-    Set<T> result = new HashSet<>();
-    Collections.sort(roots);
+    Set<T> result = new LinkedHashSet<>();
+    // put into a tree map to sort by integer type.
+    TreeMap<Integer, T> intList = new TreeMap<>();
+
     for (T root : roots) {
-      result.add(root);
+      intList.put(Integer.parseInt(root.toString()), root);
+    }
+
+    for (int key : intList.keySet()) {
+      result.add(intList.get(key));
     }
 
     return result;
@@ -228,17 +235,24 @@ public class Graph<T extends Comparable<T>> {
 
     // only check equivalence class if the graph is an equivalence realtion
     if (isEquivalence()) {
+      List<T> vertexList = new ArrayList<>();
       // Iterate through every edge
       for (Edge<T> edge : edges) {
         // // If the destination of the edge is the vertex, add the source to the equivalence class
         if (edge.getDestination().equals(vertex)) {
-          equivalenceClasses.add(edge.getSource());
+          vertexList.add(edge.getSource());
         }
         // If the source of the edge is the vertex, add the destination to the equivalence class
         // (ie. edge fulfills (v1,v2))
         if (edge.getSource().equals(vertex)) {
-          equivalenceClasses.add(edge.getDestination());
+          vertexList.add(edge.getDestination());
         }
+
+        Collections.sort(vertexList);
+        for (T currentVertex : vertexList) {
+          equivalenceClasses.add(currentVertex);
+        }
+        System.out.println(equivalenceClasses.toString());
       }
     }
 
@@ -269,17 +283,18 @@ public class Graph<T extends Comparable<T>> {
     for (T root : roots) {
 
       // create new treemap
-      TreeMap<T, Edge<T>> rootsChildren = new TreeMap<>();
+      TreeMap<Integer, Edge<T>> rootsChildren = new TreeMap<>();
 
       // Find all edges with the root as the source and enqueue them
       for (Edge<T> edge : edges) {
         if (edge.getSource().equals(root)) {
-          rootsChildren.put(edge.getDestination(), edge);
+          rootsChildren.put(Integer.parseInt(edge.getDestination().toString()), edge);
+          System.out.println(edge.getDestination());
         }
       }
 
       // queue the children
-      for (T key : rootsChildren.keySet()) {
+      for (int key : rootsChildren.keySet()) {
         queue.enqueue(rootsChildren.get(key));
       }
 
@@ -295,17 +310,17 @@ public class Graph<T extends Comparable<T>> {
           result.add(currentVertex);
 
           // create a tree map to automatically sort by the destination values.
-          TreeMap<T, Edge<T>> children = new TreeMap<>();
+          TreeMap<Integer, Edge<T>> children = new TreeMap<>();
 
           // find all edges with the same source as this edges destinations
           for (Edge<T> edge : edges) {
             if (edge.getSource().equals(currentVertex)) {
-              children.put(edge.getDestination(), edge);
+              children.put(Integer.parseInt(edge.getDestination().toString()), edge);
             }
           }
 
           // queue each edge.
-          for (T key : children.keySet()) {
+          for (int key : children.keySet()) {
             queue.enqueue(children.get(key));
           }
         }
@@ -344,7 +359,7 @@ public class Graph<T extends Comparable<T>> {
         }
 
         // create a tree map that compares in reverse order.
-        TreeMap<T, Edge<T>> currentChildren = new TreeMap<>(Comparator.reverseOrder());
+        TreeMap<Integer, Edge<T>> currentChildren = new TreeMap<>(Comparator.reverseOrder());
 
         for (Edge<T> edge : edges) {
           // look for edges with the same source
@@ -352,15 +367,15 @@ public class Graph<T extends Comparable<T>> {
             // look for edges that do not have a vertex we have already visited
             if (!visited.contains(edge.getDestination())) {
               // add the edge to the list
-              currentChildren.put(edge.getDestination(), edge);
+              currentChildren.put(Integer.parseInt(edge.getDestination().toString()), edge);
             }
           }
         }
 
         if (!currentChildren.isEmpty()) {
           // push the destination into the stack.
-          for (T destination : currentChildren.keySet()) {
-            stack.push(destination);
+          for (int key : currentChildren.keySet()) {
+            stack.push(currentChildren.get(key).getDestination());
           }
         }
       }
@@ -386,17 +401,18 @@ public class Graph<T extends Comparable<T>> {
       result.add(root);
 
       // create new treemap
-      TreeMap<T, Edge<T>> rootsChildren = new TreeMap<>();
+      TreeMap<Integer, Edge<T>> rootsChildren = new TreeMap<>();
 
       // Find all edges with the root as the source and enqueue them
       for (Edge<T> edge : edges) {
         if (edge.getSource().equals(root)) {
-          rootsChildren.put(edge.getDestination(), edge);
+          rootsChildren.put(Integer.parseInt(edge.getDestination().toString()), edge);
+          System.out.println(edge.getDestination());
         }
       }
 
       // queue the children
-      for (T key : rootsChildren.keySet()) {
+      for (int key : rootsChildren.keySet()) {
         queue.enqueue(rootsChildren.get(key));
       }
     }
@@ -420,34 +436,35 @@ public class Graph<T extends Comparable<T>> {
       // base case of if the queue is empty, return the list of results.
       return result;
     } else {
-      // dequeue and get the current edge and its vertex
+      // dequeue current edge and vertex.
       Edge<T> currentEdge = queue.dequeue();
-      T vertex = currentEdge.getDestination();
-
-      // if we have not visited this node before,
-      if (!visited.contains(vertex)) {
-        visited.add(vertex);
-        result.add(vertex);
+      T currentVertex = currentEdge.getDestination();
+      // check if the current vertex has already been visited
+      if (!visited.contains(currentVertex)) {
+        // mark the current vertex as visited
+        visited.add(currentVertex);
+        // add the current vertex to the result list
+        result.add(currentVertex);
 
         // create a tree map to automatically sort by the destination values.
-        TreeMap<T, Edge<T>> children = new TreeMap<>();
+        TreeMap<Integer, Edge<T>> children = new TreeMap<>();
 
         // find all edges with the same source as this edges destinations
         for (Edge<T> edge : edges) {
-          if (edge.getSource().equals(vertex)) {
-            children.put(edge.getDestination(), edge);
+          if (edge.getSource().equals(currentVertex)) {
+            children.put(Integer.parseInt(edge.getDestination().toString()), edge);
           }
         }
 
         // queue each edge.
-        for (T key : children.keySet()) {
+        for (int key : children.keySet()) {
           queue.enqueue(children.get(key));
         }
       }
-
-      // recursively call function again.
-      return recursiveFunctionBreadthFirst(queue, visited, result);
     }
+
+    // recursively call function again.
+    return recursiveFunctionBreadthFirst(queue, visited, result);
   }
 
   /**
@@ -504,7 +521,7 @@ public class Graph<T extends Comparable<T>> {
       }
 
       // create a tree map that compares in reverse order.
-      TreeMap<T, Edge<T>> currentChildren = new TreeMap<>(Comparator.reverseOrder());
+      TreeMap<Integer, Edge<T>> currentChildren = new TreeMap<>(Comparator.reverseOrder());
 
       for (Edge<T> edge : edges) {
         // look for edges with the same source
@@ -512,15 +529,15 @@ public class Graph<T extends Comparable<T>> {
           // look for edges that do not have a vertex we have already visited
           if (!visited.contains(edge.getDestination())) {
             // add the edge to the list
-            currentChildren.put(edge.getDestination(), edge);
+            currentChildren.put(Integer.parseInt(edge.getDestination().toString()), edge);
           }
         }
       }
 
       if (!currentChildren.isEmpty()) {
         // push the destination into the stack.
-        for (T destination : currentChildren.keySet()) {
-          stack.push(destination);
+        for (int key : currentChildren.keySet()) {
+          stack.push(currentChildren.get(key).getDestination());
         }
       }
       return recursiveFunctionDepthFirst(stack, visited, result);
