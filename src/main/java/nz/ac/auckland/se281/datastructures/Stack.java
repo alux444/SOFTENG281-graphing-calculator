@@ -14,7 +14,7 @@ public class Stack<T> {
   /**
    * Pushes data into the top of the stack.
    *
-   * @param data: data to be pushed in.
+   * @param data data to be pushed in.
    */
   public void push(T data) {
     Node<T> tempNode = new Node<T>(data);

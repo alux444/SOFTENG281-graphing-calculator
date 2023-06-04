@@ -20,7 +20,7 @@ public class Queue<T> {
   /**
    * Adds an edge to the back of the queue.
    *
-   * @param data: edge to be added.
+   * @param data edge to be added.
    */
   public void enqueue(Edge<T> data) {
     queueList.add(data);
@@ -45,7 +45,7 @@ public class Queue<T> {
    * @return edge at front of queue.
    */
   public Edge<T> peek() {
-    return queueList.get(0);
+    return queueList.get(this.front);
   }
 
   /**
