@@ -20,7 +20,7 @@ public class Queue<T> {
   /**
    * Adds an edge to the back of the queue.
    *
-   * @param Edge<T> edge to be added.
+   * @param data: edge to be added.
    */
   public void enqueue(Edge<T> data) {
     queueList.add(data);

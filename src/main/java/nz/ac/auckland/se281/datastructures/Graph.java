@@ -23,8 +23,8 @@ public class Graph<T extends Comparable<T>> {
   /**
    * the constructor for the graph.
    *
-   * @param Set<T> a set of the graphs verticies.
-   * @param Set<T> a set of the graphs edges.
+   * @param verticies: a set of the graphs verticies.
+   * @param edges: a set of the graphs edges.
    */
   public Graph(Set<T> verticies, Set<Edge<T>> edges) {
     this.verticies = verticies;
@@ -227,7 +227,7 @@ public class Graph<T extends Comparable<T>> {
    * the vertex returns a set of all the vertices which lead to or from the vertex (aka the
    * equivalence class).
    *
-   * @param <T> vertex of equivalence class.
+   * @param vertex: vertex of equivalence class.
    * @return set of equivalence class for the vertex.
    */
   public Set<T> getEquivalenceClass(T vertex) {
@@ -426,9 +426,9 @@ public class Graph<T extends Comparable<T>> {
   /**
    * a recursive helper function for the recursive breath search.
    *
-   * @param Queue<T> input queue.
-   * @param Set<T> set of visited vertices
-   * @param List<T> list of previous results.
+   * @param queue: queue type of input queue.
+   * @param visited: set of visited vertices
+   * @param result: list of previous results.
    * @return list of order of search.
    */
   private List<T> recursiveFunctionBreadthFirst(Queue<T> queue, Set<T> visited, List<T> result) {
@@ -502,9 +502,9 @@ public class Graph<T extends Comparable<T>> {
   /**
    * a recursive helper function for the recursive depth search.
    *
-   * @param Queue<T> input queue.
-   * @param Set<T> set of visited vertices
-   * @param List<T> list of previous results.
+   * @param queue: queue type of input queue.
+   * @param visited: set of visited vertices
+   * @param result: list of previous results.
    * @return list of order of search.
    */
   private List<T> recursiveFunctionDepthFirst(Stack<T> stack, Set<T> visited, List<T> result) {

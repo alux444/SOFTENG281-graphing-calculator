@@ -14,7 +14,8 @@ public class Edge<T> {
   /**
    * The constructor for the edge type.
    *
-   * @param <T> The source vertex, and destination vertex.
+   * @param source: the source vertex
+   * @param destination: the destination vertex.
    */
   public Edge(T source, T destination) {
     this.source = source;

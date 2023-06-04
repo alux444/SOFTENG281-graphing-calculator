@@ -11,7 +11,7 @@ public class Node<T> {
   /**
    * The constructor for the node.
    *
-   * @param <T> data input for the node.
+   * @param data: data input for the node.
    */
   public Node(T data) {
     this.data = data;
@@ -29,7 +29,7 @@ public class Node<T> {
   /**
    * Sets the data of the node.
    *
-   * @param <T> data that is to be set.
+   * @param data: data that is to be set.
    */
   public void setData(T data) {
     this.data = data;
@@ -47,7 +47,7 @@ public class Node<T> {
   /**
    * Sets the next node for this node.
    *
-   * @param Node<T> The next node.
+   * @param next: The next node.
    */
   public void setNext(Node<T> next) {
     this.next = next;
