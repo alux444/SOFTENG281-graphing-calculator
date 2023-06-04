@@ -7,10 +7,14 @@ import java.util.List;
 public class Queue<T> {
 
   private List<Edge<T>> queueList;
+  private int front;
+  private int end;
 
   /** Constructor for the queue. */
   public Queue() {
     this.queueList = new ArrayList<Edge<T>>();
+    this.front = 0;
+    this.end = 0;
   }
 
   /**
@@ -20,6 +24,7 @@ public class Queue<T> {
    */
   public void enqueue(Edge<T> data) {
     queueList.add(data);
+    this.end++;
   }
 
   /**
@@ -28,13 +33,14 @@ public class Queue<T> {
    * @return removed edge.
    */
   public Edge<T> dequeue() {
-    Edge<T> removed = queueList.get(0);
-    queueList.remove(0);
+    Edge<T> removed = queueList.get(front);
+    this.front++;
+
     return removed;
   }
 
   /**
-   * Returns the first added item from the queue without removing it.
+   * The method returns the first added item from the queue without removing it.
    *
    * @return edge at front of queue.
    */
@@ -43,23 +49,23 @@ public class Queue<T> {
   }
 
   /**
-   * Returns a boolean true if the queue is currently empty, otherwise a false.
+   * The method returns a boolean true if the queue is currently empty, otherwise a false.
    *
    * @return boolean of is empty.
    */
   public boolean isEmpty() {
-    if (queueList.size() == 0) {
+    if (queueList.size() - this.front == 0) {
       return true;
     }
     return false;
   }
 
   /**
-   * Returns the current queue in a list form.
+   * The method returns the current queue in a list form.
    *
    * @return list of the current queue.
    */
   public List<Edge<T>> returnQueue() {
-    return queueList;
+    return queueList.subList(front, end);
   }
 }

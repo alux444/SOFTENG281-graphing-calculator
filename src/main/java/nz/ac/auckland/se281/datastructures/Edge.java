@@ -12,28 +12,29 @@ public class Edge<T> {
   private T destination;
 
   /**
-   * the constructor for the edge type.
+   * The constructor for the edge type.
    *
-   * @param <T> The source vertex.
-   * @param <T> The destination vertex.
+   * @param <T> The source vertex, and destination vertex.
    */
   public Edge(T source, T destination) {
     this.source = source;
     this.destination = destination;
   }
 
-  /** returns the source vertex of the graph. 
-   * 
+  /**
+   * The function returns the source vertex of the graph.
+   *
    * @return source of vertex.
-  */
+   */
   public T getSource() {
     return source;
   }
 
-  /** returns the destinatiion vertex of the graph. 
-   * 
+  /**
+   * This method returns the destinatiion vertex of the graph.
+   *
    * @return source of destination.
-  */
+   */
   public T getDestination() {
     return destination;
   }

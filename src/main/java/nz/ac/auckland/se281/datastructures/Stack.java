@@ -12,7 +12,7 @@ public class Stack<T> {
   }
 
   /**
-   * Pushes data into the top of the stack
+   * Pushes data into the top of the stack.
    *
    * @param <T> data to be pushed in.
    */
@@ -48,7 +48,7 @@ public class Stack<T> {
   }
 
   /**
-   * Returns the integer size of the stack.
+   * The method returns the integer size of the stack.
    *
    * @return integer size.
    */
@@ -57,7 +57,7 @@ public class Stack<T> {
   }
 
   /**
-   * Returns a boolean true if the stack is currently empty, otherwise false.
+   * The method returns a boolean true if the stack is currently empty, otherwise false.
    *
    * @return boolean of is empty.
    */

@@ -18,7 +18,7 @@ public class Node<T> {
   }
 
   /**
-   * returns the data of the node.
+   * The method returns the data of the node.
    *
    * @return the data of the node.
    */
@@ -27,7 +27,7 @@ public class Node<T> {
   }
 
   /**
-   * sets the data of the node.
+   * Sets the data of the node.
    *
    * @param <T> data that is to be set.
    */
@@ -36,7 +36,7 @@ public class Node<T> {
   }
 
   /**
-   * Returns the next node.
+   * The method returns the next node.
    *
    * @return next node.
    */
@@ -45,7 +45,7 @@ public class Node<T> {
   }
 
   /**
-   * Sets the next node.
+   * Sets the next node for this node.
    *
    * @param Node<T> The next node.
    */
