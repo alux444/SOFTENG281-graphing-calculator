@@ -5,7 +5,7 @@ public class Stack<T> {
   private Node<T> head;
   private int size;
 
-  /** Constructor for the stack structure */
+  /** Constructor for the stack structure. */
   public Stack() {
     this.head = null;
     this.size = 0;

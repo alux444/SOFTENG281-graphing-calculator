@@ -23,20 +23,20 @@ public class Edge<T> {
   }
 
   /**
-   * The function returns the source vertex of the graph.
+   * This method will return the destination vertex of the edge.
+   *
+   * @return destination of vertex.
+   */
+  public T getDestination() {
+    return destination;
+  }
+
+  /**
+   * The function returns the source vertex of the edge.
    *
    * @return source of vertex.
    */
   public T getSource() {
     return source;
-  }
-
-  /**
-   * This method returns the destinatiion vertex of the graph.
-   *
-   * @return source of destination.
-   */
-  public T getDestination() {
-    return destination;
   }
 }
