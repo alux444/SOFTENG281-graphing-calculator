@@ -45,9 +45,9 @@ public class Node<T> {
   }
 
   /**
-   * Sets the next node for this node.
+   * This method will set the next node for this current node.
    *
-   * @param next: The next node.
+   * @param next next node to be set as.
    */
   public void setNext(Node<T> next) {
     this.next = next;
