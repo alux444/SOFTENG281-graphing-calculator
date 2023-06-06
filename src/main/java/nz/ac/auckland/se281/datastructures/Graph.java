@@ -48,7 +48,7 @@ public class Graph<T extends Comparable<T>> {
         // go through each vertex and add the minimum value for each equivalence relation
         Set<T> equivalenceClass = getEquivalenceClass(vertex);
         // if there are more than 1 node in the clas, add to the roots.
-        if (equivalenceClass.size() > 1) {
+        if (equivalenceClass.size() > 0) {
           roots.add(Collections.min(equivalenceClass));
         }
       }
@@ -61,7 +61,7 @@ public class Graph<T extends Comparable<T>> {
       for (Edge<T> edge : edges) {
         // if the edge destination is equal to the vertice, and source ISNT, i.e it isnt a self
         // loop, increase the in degree.
-        if (edge.getDestination().equals(vertice) && !edge.getSource().equals(vertice)) {
+        if (edge.getDestination().equals(vertice)) {
           inDegree++;
         }
         // otherwise, if the source is the vertice, increase the out degree.
