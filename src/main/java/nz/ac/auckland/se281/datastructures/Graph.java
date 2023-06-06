@@ -122,24 +122,24 @@ public class Graph<T extends Comparable<T>> {
 
     // check for a vertice
     for (T vertice : verticies) {
-      boolean symmetry = false;
       for (Edge<T> edge : edges) {
         // check all edges with specific vertice
         if (edge.getSource().equals(vertice)) {
+          boolean symmetry = false;
           for (Edge<T> otherEdge : edges) {
             // go through all edges and look for another edge which has the source of our first
             // edges destination (i.e the first edge is going into this edge)
             if (otherEdge.getSource().equals(edge.getDestination())) {
               // now if there exists an edge which returns back to the vertice, there is symmetry.
-              if (otherEdge.getDestination().equals(vertice)) {
+              if (otherEdge.getDestination().equals(edge.getSource())) {
                 symmetry = true;
               }
             }
           }
+          if (!symmetry) {
+            return false;
+          }
         }
-      }
-      if (!symmetry) {
-        return false;
       }
     }
 
@@ -252,7 +252,6 @@ public class Graph<T extends Comparable<T>> {
         for (T currentVertex : vertexList) {
           equivalenceClasses.add(currentVertex);
         }
-        System.out.println(equivalenceClasses.toString());
       }
     }
 
@@ -289,7 +288,6 @@ public class Graph<T extends Comparable<T>> {
       for (Edge<T> edge : edges) {
         if (edge.getSource().equals(root)) {
           rootsChildren.put(Integer.parseInt(edge.getDestination().toString()), edge);
-          System.out.println(edge.getDestination());
         }
       }
 
@@ -407,7 +405,6 @@ public class Graph<T extends Comparable<T>> {
       for (Edge<T> edge : edges) {
         if (edge.getSource().equals(root)) {
           rootsChildren.put(Integer.parseInt(edge.getDestination().toString()), edge);
-          System.out.println(edge.getDestination());
         }
       }
 
@@ -493,8 +490,6 @@ public class Graph<T extends Comparable<T>> {
     }
 
     List<T> finalResult = recursiveFunctionDepthFirst(stack, visited, result);
-
-    System.out.println("RDFS");
 
     return finalResult;
   }

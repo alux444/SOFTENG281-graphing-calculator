@@ -477,5 +477,308 @@ public class MainTest {
       assertContains("Successfully opened graph from file g.txt");
       assertContains("[1, 3, 5, 6, 9, 11, 7, 2, 12, 4, 8, 10]");
     }
+
+    @Test
+    public void TY_8_x_IDFS() throws Exception {
+      runCommands(OPEN_FILE, "x.txt", GRAPH_SEARCH_IDFS);
+      assertContains("Successfully opened graph from file x.txt");
+      assertContains("[2, 0, 1, 3, 4, 5]");
+    }
+
+    @Test
+    public void TY_08_x_RDFS() throws Exception {
+      runCommands(OPEN_FILE, "x.txt", GRAPH_SEARCH_RDFS);
+      assertContains("Successfully opened graph from file x.txt");
+      assertContains("[2, 0, 1, 3, 4, 5]");
+    }
+
+    @Test
+    public void TY_08_x_IBFS() throws Exception {
+      runCommands(OPEN_FILE, "x.txt", GRAPH_SEARCH_IBFS);
+      assertContains("Successfully opened graph from file x.txt");
+      assertContains("[2, 0, 5, 1, 3, 4]");
+    }
+
+    @Test
+    public void TY_08_x_RBFS() throws Exception {
+      runCommands(OPEN_FILE, "x.txt", GRAPH_SEARCH_RBFS);
+      assertContains("Successfully opened graph from file x.txt");
+      assertContains("[2, 0, 5, 1, 3, 4]");
+    }
+
+    @Test
+    public void TJ_D_roots() throws Exception {
+      runCommands(OPEN_FILE, "d.txt", LIST_ROOT_VERTICIES);
+      assertContains("Successfully opened graph from file d.txt");
+      assertContains("[0, 1, 6, 8]");
+    }
+
+    @Test
+    public void TaJ_D_reflexivity() throws Exception {
+      runCommands(OPEN_FILE, "d.txt", CHECK_REFLEXIVITY);
+      assertContains("Successfully opened graph from file d.txt");
+      assertContains("The graph is reflexive");
+    }
+
+    @Test
+    public void TJa_D_symmetry() throws Exception {
+      runCommands(OPEN_FILE, "d.txt", CHECK_SYMMETRY);
+      assertContains("Successfully opened graph from file d.txt");
+      assertContains("The graph is symmetric");
+    }
+
+    @Test
+    public void TJa_D_transitivity() throws Exception {
+      runCommands(OPEN_FILE, "d.txt", CHECK_TRANSITIVITY);
+      assertContains("Successfully opened graph from file d.txt");
+      assertContains("The graph is transitive");
+    }
+
+    @Test
+    public void TJa_D_antisymmetry() throws Exception {
+      runCommands(OPEN_FILE, "d.txt", CHECK_ANTISYMMETRY);
+      assertContains("Successfully opened graph from file d.txt");
+      assertContains("The graph is NOT antisymmetric");
+    }
+
+    @Test
+    public void TJa_D_equivalence() throws Exception {
+      runCommands(OPEN_FILE, "d.txt", CHECK_EQUIVALENCE);
+      assertContains("Successfully opened graph from file d.txt");
+      assertContains("The graph is an equivalence relation");
+    }
+
+    @Test
+    public void TY_a01_G_iterative_BFS() throws Exception {
+      runCommands(OPEN_FILE, "g.txt", GRAPH_SEARCH_IBFS);
+      assertContains("Successfully opened graph from file g.txt");
+      assertContains("[1, 3, 5, 6, 9, 11, 7, 2, 12, 4, 8, 10]");
+    }
+
+    @Test
+    public void TY_02a_G_iterative_DFS() throws Exception {
+      runCommands(OPEN_FILE, "g.txt", GRAPH_SEARCH_IDFS);
+      assertContains("Successfully opened graph from file g.txt");
+      assertContains("[1, 3, 5, 7, 6, 2, 4, 10, 8, 9, 11, 12]");
+    }
+
+    @Test
+    public void TY_03_G_recursive_BFS() throws Exception {
+      runCommands(OPEN_FILE, "g.txt", GRAPH_SEARCH_RBFS);
+      assertContains("Successfully opened graph from file g.txt");
+      assertContains("[1, 3, 5, 6, 9, 11, 7, 2, 12, 4, 8, 10]");
+    }
+
+    @Test
+    public void TY_04_G_recursive_DFS() throws Exception {
+      runCommands(OPEN_FILE, "g.txt", GRAPH_SEARCH_RDFS);
+      assertContains("Successfully opened graph from file g.txt");
+      assertContains("[1, 3, 5, 7, 6, 2, 4, 10, 8, 9, 11, 12]");
+    }
+
+    // dfs and bfs with 25 vertices
+    @Test
+    public void TY_0a1_H_iterative_BFS() throws Exception {
+      runCommands(OPEN_FILE, "h.txt", GRAPH_SEARCH_IBFS);
+      assertContains("Successfully opened graph from file h.txt");
+      assertContains(
+          "[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23,"
+              + " 24]");
+    }
+
+    @Test
+    public void TY_02_aH_iterative_DFS() throws Exception {
+      runCommands(OPEN_FILE, "h.txt", GRAPH_SEARCH_IDFS);
+      assertContains("Successfully opened graph from file h.txt");
+      assertContains(
+          "[0, 1, 3, 7, 15, 19, 22, 24, 8, 4, 9, 16, 20, 23, 10, 2, 5, 11, 17, 21, 12, 6, 13, 18,"
+              + " 14]");
+    }
+
+    @Test
+    public void TY_03_H_reacursive_BFS() throws Exception {
+      runCommands(OPEN_FILE, "h.txt", GRAPH_SEARCH_RBFS);
+      assertContains("Successfully opened graph from file h.txt");
+      assertContains(
+          "[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23,"
+              + " 24]");
+    }
+
+    @Test
+    public void TY_04_H_recuarsive_DFS() throws Exception {
+      runCommands(OPEN_FILE, "h.txt", GRAPH_SEARCH_RDFS);
+      assertContains("Successfully opened graph from file h.txt");
+      assertContains(
+          "[0, 1, 3, 7, 15, 19, 22, 24, 8, 4, 9, 16, 20, 23, 10, 2, 5, 11, 17, 21, 12, 6, 13, 18,"
+              + " 14]");
+    }
+
+    @Test
+    public void TY_02_I_aIBFS() throws Exception {
+      runCommands(OPEN_FILE, "i.txt", GRAPH_SEARCH_IBFS);
+      assertContains("Successfully opened graph from file i.txt");
+      assertContains("[0, 2, 10, 12, 20, 100, 1, 3, 11, 13, 21, 101]");
+    }
+
+    @Test
+    public void TY_03_aI_RBFS() throws Exception {
+      runCommands(OPEN_FILE, "i.txt", GRAPH_SEARCH_RBFS);
+      assertContains("Successfully opened graph from file i.txt");
+      assertContains("[0, 2, 10, 12, 20, 100, 1, 3, 11, 13, 21, 101]");
+    }
+
+    @Test
+    public void TY_04_I_aIDFS() throws Exception {
+      runCommands(OPEN_FILE, "i.txt", GRAPH_SEARCH_IDFS);
+      assertContains("Successfully opened graph from file i.txt");
+      assertContains("[0, 1, 2, 3, 10, 11, 12, 13, 20, 21, 100, 101]");
+    }
+
+    @Test
+    public void TY_D_roots() throws Exception {
+      runCommands(OPEN_FILE, "r.txt", LIST_ROOT_VERTICIES);
+      assertContains("Successfully opened graph from file r.txt");
+      assertContains("[1]");
+    }
+
+    @Test
+    public void TY_D_reflexivity() throws Exception {
+      runCommands(OPEN_FILE, "r.txt", CHECK_REFLEXIVITY);
+      assertContains("Successfully opened graph from file r.txt");
+      assertContains("The graph is reflexive");
+    }
+
+    @Test
+    public void TY_D_symmetry() throws Exception {
+      runCommands(OPEN_FILE, "r.txt", CHECK_SYMMETRY);
+      assertContains("Successfully opened graph from file r.txt");
+      assertContains("The graph is symmetric");
+    }
+
+    @Test
+    public void TY_D_antisymmetry() throws Exception {
+      runCommands(OPEN_FILE, "r.txt", CHECK_ANTISYMMETRY);
+      assertContains("Successfully opened graph from file r.txt");
+      assertContains("The graph is NOT antisymmetric");
+    }
+
+    @Test
+    public void TY_D_transitivity() throws Exception {
+      runCommands(OPEN_FILE, "r.txt", CHECK_TRANSITIVITY);
+      assertContains("Successfully opened graph from file r.txt");
+      assertContains("The graph is transitive");
+    }
+
+    @Test
+    public void TY_D_equivalence() throws Exception {
+      runCommands(OPEN_FILE, "r.txt", CHECK_EQUIVALENCE);
+      assertContains("Successfully opened graph from file r.txt");
+      assertContains("The graph is an equivalence relation");
+    }
+
+    @Test
+    public void TY_D_equivalence_class_1() throws Exception {
+      runCommands(OPEN_FILE, "r.txt", COMPUTE_EQUIVALENCE, 1);
+      assertContains("Successfully opened graph from file r.txt");
+      assertContains("[1, 2, 3, 4]");
+    }
+
+    @Test
+    public void TY_E_roots() throws Exception {
+      runCommands(OPEN_FILE, "e.txt", LIST_ROOT_VERTICIES);
+      assertContains("Successfully opened graph from file e.txt");
+      assertContains("[]");
+    }
+
+    @Test
+    public void TY_E_reflexivity() throws Exception {
+      runCommands(OPEN_FILE, "e.txt", CHECK_REFLEXIVITY);
+      assertContains("Successfully opened graph from file e.txt");
+      assertContains("The graph is reflexive");
+    }
+
+    @Test
+    public void TY_E_symmetry() throws Exception {
+      runCommands(OPEN_FILE, "e.txt", CHECK_SYMMETRY);
+      assertContains("Successfully opened graph from file e.txt");
+      assertContains("The graph is NOT symmetric");
+    }
+
+    @Test
+    public void TY_E_antisymmetry() throws Exception {
+      runCommands(OPEN_FILE, "e.txt", CHECK_ANTISYMMETRY);
+      assertContains("Successfully opened graph from file e.txt");
+      assertContains("The graph is NOT antisymmetric");
+    }
+
+    @Test
+    public void TY_E_transitivity() throws Exception {
+      runCommands(OPEN_FILE, "e.txt", CHECK_TRANSITIVITY);
+      assertContains("Successfully opened graph from file e.txt");
+      assertContains("The graph is transitive");
+    }
+
+    @Test
+    public void TY_E_equivalence() throws Exception {
+      runCommands(OPEN_FILE, "e.txt", CHECK_EQUIVALENCE);
+      assertContains("Successfully opened graph from file e.txt");
+      assertContains("The graph is NOT an equivalence relation");
+    }
+
+    @Test
+    public void TY_E_equivalence_class_0() throws Exception {
+      runCommands(OPEN_FILE, "e.txt", COMPUTE_EQUIVALENCE, 1);
+      assertContains("Successfully opened graph from file e.txt");
+      assertContains("[]");
+    }
+
+    @Test
+    public void TY_F_roots() throws Exception {
+      runCommands(OPEN_FILE, "f.txt", LIST_ROOT_VERTICIES);
+      assertContains("Successfully opened graph from file f.txt");
+      assertContains("[0]");
+    }
+
+    @Test
+    public void TY_F_reflexivity() throws Exception {
+      runCommands(OPEN_FILE, "f.txt", CHECK_REFLEXIVITY);
+      assertContains("Successfully opened graph from file f.txt");
+      assertContains("The graph is reflexive");
+    }
+
+    @Test
+    public void TY_F_symmetry() throws Exception {
+      runCommands(OPEN_FILE, "f.txt", CHECK_SYMMETRY);
+      assertContains("Successfully opened graph from file f.txt");
+      assertContains("The graph is symmetric");
+    }
+
+    @Test
+    public void TY_F_antisymmetry() throws Exception {
+      runCommands(OPEN_FILE, "f.txt", CHECK_ANTISYMMETRY);
+      assertContains("Successfully opened graph from file f.txt");
+      assertContains("The graph is antisymmetric");
+    }
+
+    @Test
+    public void TY_F_transitivity() throws Exception {
+      runCommands(OPEN_FILE, "f.txt", CHECK_TRANSITIVITY);
+      assertContains("Successfully opened graph from file f.txt");
+      assertContains("The graph is transitive");
+    }
+
+    @Test
+    public void TY_F_equivalence() throws Exception {
+      runCommands(OPEN_FILE, "f.txt", CHECK_EQUIVALENCE);
+      assertContains("Successfully opened graph from file f.txt");
+      assertContains("The graph is an equivalence relation");
+    }
+
+    @Test
+    public void TY_F_equivalence_class_0() throws Exception {
+      runCommands(OPEN_FILE, "f.txt", COMPUTE_EQUIVALENCE, 0);
+      assertContains("Successfully opened graph from file f.txt");
+      assertContains("[0]");
+    }
   }
 }
